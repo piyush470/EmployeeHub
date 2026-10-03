@@ -6,7 +6,7 @@ A full-featured web application built with **Django** to manage company workforc
 
 > [!NOTE]
 > **Project Attribution & Development Note:**  
-> The **backend architecture, database schemas, business logic, routing, CRUD views, and model relationships** were independently authored and implemented by the developer following hands-on Django college training.  
+> The **backend architecture, database schemas, business logic, routing, CRUD views, and model relationships** were independently authored and implemented by me, following hands-on Django college training.  
 > The **frontend UI & layout styling** were created with the assistance of **AI** to streamline development time and deliver a modern, polished visual presentation.
 
 ---
