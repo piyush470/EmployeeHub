@@ -1,0 +1,12 @@
+# Core Django Framework
+Django>=5.0.0,<7.0.0
+asgiref>=3.8.1
+sqlparse>=0.5.0
+tzdata>=2024.1
+
+# Image Processing (Required for Employee profile_image ImageField)
+Pillow>=10.0.0
+
+# Deployment & Production Server (for Linux/Cloud hosts like Render, Railway, Heroku)
+gunicorn>=21.2.0
+whitenoise>=6.6.0

@@ -1,0 +1,446 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+        {% block title %}Employee Management System{% endblock title %}
+    </title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        /* ==============================
+           GLOBAL
+        ============================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+        }
+
+
+        /* ==============================
+           NAVBAR
+        ============================== */
+
+        .main-navbar {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 800;
+            color: #111827 !important;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #2563eb;
+            color: white;
+            font-size: 19px;
+        }
+
+        .brand-text {
+            line-height: 1.1;
+        }
+
+        .brand-subtitle {
+            display: block;
+            font-size: 10px;
+            font-weight: 500;
+            color: #6b7280;
+            margin-top: 3px;
+            letter-spacing: 0.3px;
+        }
+
+        .navbar-nav {
+            gap: 5px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #4b5563 !important;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 9px 13px !important;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            background: #eff6ff;
+            color: #2563eb !important;
+        }
+
+        .navbar-nav .nav-link.active {
+            background: #eff6ff;
+            color: #2563eb !important;
+        }
+
+        .navbar-toggler {
+            border: 1px solid #d1d5db;
+            padding: 7px 9px;
+            border-radius: 8px;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+
+        /* ==============================
+           PAGE CONTAINER
+        ============================== */
+
+        .page-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 24px;
+        }
+
+
+        /* ==============================
+           COMMON CARDS
+        ============================== */
+
+        .dashboard-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(15, 23, 42, 0.05);
+        }
+
+
+        /* ==============================
+           BUTTONS
+        ============================== */
+
+        .btn {
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+
+        /* ==============================
+           FOOTER
+        ============================== */
+
+        .main-footer {
+            margin-top: 40px;
+            background: #111827;
+            color: #d1d5db;
+            padding: 28px 0;
+        }
+
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .footer-brand {
+            color: #ffffff;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .footer-text {
+            margin: 0;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 18px;
+        }
+
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: #ffffff;
+        }
+
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media (max-width: 991px) {
+
+            .navbar-nav {
+                margin-top: 12px;
+                padding-top: 10px;
+                border-top: 1px solid #e5e7eb;
+            }
+
+            .navbar-nav .nav-link {
+                padding: 10px 12px !important;
+            }
+
+            .page-container {
+                padding: 24px 18px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 576px) {
+
+            .main-navbar {
+                padding: 9px 0;
+            }
+
+            .navbar-brand {
+                font-size: 17px;
+            }
+
+            .brand-icon {
+                width: 36px;
+                height: 36px;
+                border-radius: 10px;
+            }
+
+            .brand-subtitle {
+                font-size: 9px;
+            }
+
+            .page-container {
+                padding: 20px 14px;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+        }
+    </style>
+
+    {% block extra_css %}{% endblock extra_css %}
+
+</head>
+
+<body>
+
+    <!-- ==============================
+         NAVBAR
+    ============================== -->
+
+    <nav class="navbar navbar-expand-lg main-navbar">
+
+        <div class="container">
+
+            <!-- Brand -->
+            <a class="navbar-brand" href="{% url 'home' %}">
+
+                <span class="brand-icon">
+                    <i class="bi bi-people-fill"></i>
+                </span>
+
+                <span class="brand-text">
+                    EmployeeHub
+                    <span class="brand-subtitle">
+                        Employee Management System
+                    </span>
+                </span>
+
+            </a>
+
+
+            <!-- Mobile Menu Button -->
+            <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#mainNavbar"
+                aria-controls="mainNavbar"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+
+            <!-- Navigation -->
+            <div class="collapse navbar-collapse" id="mainNavbar">
+
+                <ul class="navbar-nav ms-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">
+                            <i class="bi bi-grid me-1"></i>
+                            Dashboard
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'empdata' %}">
+                            <i class="bi bi-people me-1"></i>
+                            Employees
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'form' %}">
+                            <i class="bi bi-person-plus me-1"></i>
+                            Add Employee
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">
+                            <i class="bi bi-info-circle me-1"></i>
+                            About
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">
+                            <i class="bi bi-envelope me-1"></i>
+                            Contact
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ==============================
+         MAIN CONTENT
+    ============================== -->
+
+    <main>
+
+        <div class="page-container">
+
+            {% block content %}
+
+            {% endblock content %}
+
+        </div>
+
+    </main>
+
+
+    <!-- ==============================
+         FOOTER
+    ============================== -->
+
+    <footer class="main-footer">
+
+        <div class="container">
+
+            <div class="footer-content">
+
+                <div>
+                    <div class="footer-brand">
+                        EmployeeHub
+                    </div>
+
+                    <p class="footer-text">
+                        Simple and efficient employee management.
+                    </p>
+                </div>
+
+                <div class="footer-links">
+
+                    <a href="{% url 'home' %}">
+                        Dashboard
+                    </a>
+
+                    <a href="{% url 'empdata' %}">
+                        Employees
+                    </a>
+
+                    <a href="{% url 'about' %}">
+                        About
+                    </a>
+
+                    <a href="{% url 'contact' %}">
+                        Contact
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    {% block extra_js %}{% endblock extra_js %}
+
+</body>
+
+</html>

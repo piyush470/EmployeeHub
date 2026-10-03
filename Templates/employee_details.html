@@ -1,0 +1,621 @@
+{% extends 'base.html' %}
+
+{% block title %}Employee Details | EmployeeHub{% endblock title %}
+
+{% block extra_css %}
+<style>
+    .details-page {
+        max-width: 1050px;
+        margin: 0 auto;
+        padding: 10px 0 40px;
+    }
+
+    .details-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 25px;
+        gap: 15px;
+    }
+
+    .details-heading {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .heading-icon {
+        width: 55px;
+        height: 55px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #2563eb, #4f46e5);
+        color: white;
+        font-size: 23px;
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
+    }
+
+    .details-heading h1 {
+        margin: 0;
+        font-size: 27px;
+        font-weight: 750;
+        color: #111827;
+    }
+
+    .details-heading p {
+        margin: 4px 0 0;
+        color: #6b7280;
+        font-size: 13px;
+    }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 10px 16px;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        background: white;
+        color: #374151;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.25s ease;
+    }
+
+    .back-btn:hover {
+        color: #2563eb;
+        border-color: #bfdbfe;
+        background: #f8fafc;
+    }
+
+    /* Profile Card */
+    .profile-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 10px 35px rgba(15, 23, 42, 0.06);
+    }
+
+    .profile-top {
+        padding: 30px;
+        display: flex;
+        align-items: center;
+        gap: 25px;
+        background: linear-gradient(135deg, #f8fbff, #ffffff);
+        border-bottom: 1px solid #eef0f3;
+    }
+
+    .profile-image-wrapper {
+        width: 115px;
+        height: 115px;
+        flex-shrink: 0;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 4px solid white;
+        box-shadow: 0 8px 25px rgba(15, 23, 42, 0.12);
+        background: #f1f5f9;
+    }
+
+    .profile-image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .profile-main h2 {
+        margin: 0 0 7px;
+        color: #111827;
+        font-size: 25px;
+        font-weight: 750;
+    }
+
+    .profile-main .designation {
+        color: #2563eb;
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .profile-meta {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 14px;
+        color: #6b7280;
+        font-size: 13px;
+    }
+
+    .profile-meta span {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .profile-meta i {
+        color: #64748b;
+    }
+
+    /* Details */
+    .details-body {
+        padding: 30px;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 18px;
+    }
+
+    .section-title i {
+        color: #2563eb;
+        font-size: 17px;
+    }
+
+    .section-title h3 {
+        margin: 0;
+        color: #1f2937;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .info-item {
+        padding: 16px;
+        border: 1px solid #eef0f3;
+        border-radius: 12px;
+        background: #fafbfc;
+    }
+
+    .info-label {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: #6b7280;
+        font-size: 12px;
+        margin-bottom: 7px;
+    }
+
+    .info-label i {
+        color: #64748b;
+    }
+
+    .info-value {
+        color: #1f2937;
+        font-size: 14px;
+        font-weight: 650;
+        word-break: break-word;
+    }
+
+    .salary-value {
+        color: #15803d;
+        font-size: 16px;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    .status-badge i {
+        font-size: 8px;
+    }
+
+    /* Address */
+    .address-box {
+        padding: 17px;
+        border: 1px solid #eef0f3;
+        border-radius: 12px;
+        background: #fafbfc;
+        color: #374151;
+        font-size: 14px;
+        line-height: 1.7;
+        margin-bottom: 30px;
+    }
+
+    /* Actions */
+    .details-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding-top: 22px;
+        border-top: 1px solid #eef0f3;
+    }
+
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 10px 17px;
+        border-radius: 9px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 650;
+        transition: 0.25s ease;
+    }
+
+    .edit-btn {
+        background: #eff6ff;
+        color: #2563eb;
+        border: 1px solid #dbeafe;
+    }
+
+    .edit-btn:hover {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .delete-btn {
+        background: #fef2f2;
+        color: #dc2626;
+        border: 1px solid #fee2e2;
+    }
+
+    .delete-btn:hover {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
+    @media (max-width: 768px) {
+        .details-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .back-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .profile-top {
+            padding: 22px;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .profile-meta {
+            justify-content: center;
+        }
+
+        .details-body {
+            padding: 22px;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .details-actions {
+            flex-direction: column;
+        }
+
+        .action-btn {
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .details-heading h1 {
+            font-size: 22px;
+        }
+
+        .heading-icon {
+            width: 48px;
+            height: 48px;
+            font-size: 20px;
+        }
+
+        .profile-image-wrapper {
+            width: 100px;
+            height: 100px;
+        }
+
+        .profile-main h2 {
+            font-size: 21px;
+        }
+
+        .profile-meta {
+            flex-direction: column;
+            gap: 7px;
+        }
+    }
+</style>
+{% endblock extra_css %}
+
+
+{% block content %}
+
+<div class="details-page">
+
+    <!-- Header -->
+    <div class="details-header">
+
+        <div class="details-heading">
+
+            <div class="heading-icon">
+                <i class="bi bi-person-vcard-fill"></i>
+            </div>
+
+            <div>
+                <h1>Employee Details</h1>
+                <p>View complete employee information.</p>
+            </div>
+
+        </div>
+
+        <a href="{% url 'empdata' %}" class="back-btn">
+            <i class="bi bi-arrow-left"></i>
+            Back to Employees
+        </a>
+
+    </div>
+
+
+    <!-- Profile Card -->
+    <div class="profile-card">
+
+        <!-- Profile Header -->
+        <div class="profile-top">
+
+            <div class="profile-image-wrapper">
+
+                {% if emp.profile_image %}
+                    <img src="{{ emp.profile_image.url }}" alt="{{ emp.name }}">
+                {% else %}
+                    <div style="
+                        width:100%;
+                        height:100%;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        color:#94a3b8;
+                        font-size:35px;
+                    ">
+                        <i class="bi bi-person"></i>
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+            <div class="profile-main">
+
+                <h2>{{ emp.name }}</h2>
+
+                <div class="designation">
+                    {{ emp.designation }}
+                </div>
+
+                <div class="profile-meta">
+
+                    <span>
+                        <i class="bi bi-diagram-3"></i>
+                        {{ emp.department }}
+                    </span>
+
+                    <span>
+                        <i class="bi bi-geo-alt"></i>
+                        {{ emp.city }}
+                    </span>
+
+                    <span>
+                        <i class="bi bi-envelope"></i>
+                        {{ emp.email }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Details Body -->
+        <div class="details-body">
+
+
+            <!-- Personal Information -->
+            <div class="section-title">
+                <i class="bi bi-person-vcard"></i>
+                <h3>Personal Information</h3>
+            </div>
+
+            <div class="info-grid">
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        <i class="bi bi-person"></i>
+                        Full Name
+                    </div>
+
+                    <div class="info-value">
+                        {{ emp.name }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        <i class="bi bi-calendar3"></i>
+                        Age
+                    </div>
+
+                    <div class="info-value">
+                        {{ emp.age }} years
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        <i class="bi bi-envelope"></i>
+                        Email
+                    </div>
+
+                    <div class="info-value">
+                        {{ emp.email }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        <i class="bi bi-geo-alt"></i>
+                        City
+                    </div>
+
+                    <div class="info-value">
+                        {{ emp.city }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Work Information -->
+            <div class="section-title">
+                <i class="bi bi-briefcase-fill"></i>
+                <h3>Work Information</h3>
+            </div>
+
+            <div class="info-grid">
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        <i class="bi bi-diagram-3"></i>
+                        Department
+                    </div>
+
+                    <div class="info-value">
+                        {{ emp.department }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        <i class="bi bi-person-badge"></i>
+                        Designation
+                    </div>
+
+                    <div class="info-value">
+                        {{ emp.designation }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        <i class="bi bi-bar-chart"></i>
+                        Experience
+                    </div>
+
+                    <div class="info-value">
+                        {{ emp.experience }} years
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        <i class="bi bi-currency-rupee"></i>
+                        Salary
+                    </div>
+
+                    <div class="info-value salary-value">
+                        ₹{{ emp.salary }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        <i class="bi bi-toggle-on"></i>
+                        Employment Status
+                    </div>
+
+                    <div class="info-value">
+
+                        <span class="status-badge">
+                            <i class="bi bi-circle-fill"></i>
+                            {{ emp.status }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Address -->
+            <div class="section-title">
+                <i class="bi bi-house"></i>
+                <h3>Address</h3>
+            </div>
+
+            <div class="address-box">
+                {{ emp.address }}
+            </div>
+
+
+            <!-- Actions -->
+            <div class="details-actions">
+
+                <a href="{% url 'edit' emp.id %}" class="action-btn edit-btn">
+                    <i class="bi bi-pencil-square"></i>
+                    Edit Employee
+                </a>
+
+                <a
+                    href="{% url 'delete' emp.id %}"
+                    class="action-btn delete-btn"
+                    onclick="return confirm('Are you sure you want to delete this employee?');"
+                >
+                    <i class="bi bi-trash3"></i>
+                    Delete Employee
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock content %}
